@@ -1,22 +1,24 @@
 import React, { useState, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import Todolist from "./Todolist"
-
+import Todolist from "./Todolist";
 
 function App() {
+  const [todos, settodos] = useState([]);
 
-  const [todos,settodos] = useState([])
+  const refinput = useRef();
 
-  const refinput = useRef()
-
-  function handleclick(e){
+  function handleclick(e) {
     e.preventDefault();
-    const hi = refinput.current.value
-    if(hi === "") return
-    settodos([...todos, hi])
-    refinput.current.value = null
-    
+    const hi = refinput.current.value;
+    if (hi === "") return;
+    settodos([...todos, hi]);
+    refinput.current.value = null;
+  }
+
+  function handleremove(hello) {
+    let newtodoarr = todos.filter((e) => e !== hello);
+    settodos(newtodoarr);
   }
 
   return (
@@ -25,9 +27,9 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         <form onSubmit={handleclick}>
           <input ref={refinput} type="text" placeholder="Add a Todo" />
-          <button onClick={handleclick} >+</button>
-          </form>
-        <Todolist hello={todos} />
+          <button onClick={handleclick}>+</button>
+        </form>
+        <Todolist hello={todos} handleremove={handleremove} />
       </header>
     </div>
   );
