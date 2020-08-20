@@ -2,17 +2,25 @@ import React, { useState, useRef } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Todolist from "./Todolist";
+import * as firebase from "firebase";
+
+function addtododb(todos) {
+  const todoref = firebase.database().ref("hello");
+
+  todoref.remove();
+  todoref.push(todos);
+}
 
 function App() {
   const [todos, settodos] = useState([]);
 
   const refinput = useRef();
 
-  function handleclick(e) {
+  async function handleclick(e) {
     e.preventDefault();
     const hi = refinput.current.value;
     if (hi === "") return;
-    settodos([...todos, hi]);
+    await settodos([...todos, hi]);
     refinput.current.value = null;
   }
 

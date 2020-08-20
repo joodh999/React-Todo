@@ -9,7 +9,7 @@ export default function Todolist({ hello, handleremove }) {
         key={hello + Math.floor(Math.random() * 10000)}
         className="todo"
       >
-        {hello}
+        {hello} 
       </div>
     );
   });
