@@ -4,23 +4,54 @@ import "./App.css";
 import Todolist from "./Todolist";
 import * as firebase from "firebase";
 
-function addtododb(todos) {
-  const todoref = firebase.database().ref("hello");
-
+function addtododb(todos, todoref) {
   todoref.remove();
   todoref.push(todos);
 }
 
 function App() {
   const [todos, settodos] = useState([]);
-
   const refinput = useRef();
+  let lastlen = null;
+  let len = null;
+  const rootref = firebase.database().ref().child("react");
+  const todoref = rootref.child("hello");
 
-  async function handleclick(e) {
+  len = todos.length
+
+  
+  if(lastlen !== len || lastlen === null){
+    addtododb(todos, todoref);
+    lastlen = todos.length
+  }else{
+    lastlen = todos.length
+  }
+
+
+  todoref.once("value", (snap) => {
+    const s = snap.val();
+    let t0t0;
+    if (s != null) {
+      const keys = Object.keys(s);
+      
+      for(let i=0; i < keys.length; i++){
+        const k = keys[i]
+        console.log("hello")
+        t0t0 = s[k]
+        console.log(t0t0)
+        
+      }
+      settodos(t0t0)
+      
+    }
+    return t0t0;
+  });
+
+  function handleclick(e) {
     e.preventDefault();
     const hi = refinput.current.value;
     if (hi === "") return;
-    await settodos([...todos, hi]);
+    settodos([...todos, hi]);
     refinput.current.value = null;
   }
 
